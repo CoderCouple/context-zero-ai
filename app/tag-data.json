@@ -1,7 +1,7 @@
 {
   "audio-deeplearning": 5,
-  "deep-learning": 7,
   "transformers": 1,
+  "deep-learning": 7,
   "whisper": 1,
   "research": 1,
   "tutorial": 2

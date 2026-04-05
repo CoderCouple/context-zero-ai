@@ -72,11 +72,10 @@
   },
   "lint-staged": {
     "*.+(js|jsx|ts|tsx)": [
-      "yarn eslint --fix"
+      "npm run lint"
     ],
     "*.+(js|jsx|ts|tsx|json|css|md|mdx)": [
-      "yarn prettier --write"
+      "npx prettier --write"
     ]
-  },
-  "packageManager": "yarn@3.6.1"
+  }
 }
