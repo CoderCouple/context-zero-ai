@@ -1,0 +1,308 @@
+---
+title: 'Interactive UI Components Demo'
+date: '2024-03-22'
+lastmod: '2024-03-22'
+tags: ['deep-learning', 'tutorial']
+draft: false
+summary: 'Explore our collection of interactive UI components for creating engaging blog content. Try out code playgrounds, charts, quizzes, and more!'
+images: ['/static/images/interactive-components.jpg']
+authors: ['default']
+layout: PostLayout
+canonicalUrl: https://your-domain.com/blog/interactive-components-demo
+---
+
+## Introduction
+
+This blog now supports interactive UI components that make learning more engaging and hands-on. Below are demonstrations of all the interactive components you can use in your blog posts.
+
+## Code Playground
+
+The Code Playground lets readers write and execute JavaScript code directly in the browser:
+
+<CodePlayground 
+  title="JavaScript Playground"
+  initialCode={`// Try modifying this code and clicking Run!
+const fibonacci = (n) => {
+  if (n <= 1) return n;
+  return fibonacci(n - 1) + fibonacci(n - 2);
+};
+
+// Calculate first 10 Fibonacci numbers
+for (let i = 0; i < 10; i++) {
+  console.log(\`F(\${i}) = \${fibonacci(i)}\`);
+}`}
+/>
+
+You can also create simpler examples:
+
+<CodePlayground 
+  title="Array Methods Demo"
+  initialCode={`const numbers = [1, 2, 3, 4, 5];
+
+// Map example
+const doubled = numbers.map(x => x * 2);
+console.log('Doubled:', doubled);
+
+// Filter example
+const evens = numbers.filter(x => x % 2 === 0);
+console.log('Evens:', evens);
+
+// Reduce example
+const sum = numbers.reduce((acc, x) => acc + x, 0);
+console.log('Sum:', sum);`}
+/>
+
+## Interactive Charts
+
+Visualize data with interactive charts that readers can manipulate:
+
+<InteractiveChart 
+  title="Sample Data Visualization"
+  type="line"
+/>
+
+You can provide custom data:
+
+<InteractiveChart 
+  title="Deep Learning Model Performance"
+  type="bar"
+  data={[
+    { name: 'Epoch 1', value: 65, value2: 58 },
+    { name: 'Epoch 2', value: 78, value2: 72 },
+    { name: 'Epoch 3', value: 85, value2: 81 },
+    { name: 'Epoch 4', value: 89, value2: 86 },
+    { name: 'Epoch 5', value: 92, value2: 89 },
+  ]}
+  color="#8B5CF6"
+  color2="#EC4899"
+/>
+
+## Interactive Quiz
+
+Test your readers' understanding with interactive quizzes:
+
+<Quiz 
+  title="Deep Learning Fundamentals Quiz"
+  questions={[
+    {
+      question: "What is the primary purpose of an activation function in a neural network?",
+      options: [
+        "To speed up training",
+        "To introduce non-linearity",
+        "To reduce overfitting",
+        "To normalize inputs"
+      ],
+      correct: 1,
+      explanation: "Activation functions introduce non-linearity into the network, allowing it to learn complex patterns that linear transformations alone cannot capture."
+    },
+    {
+      question: "Which of the following is NOT a common regularization technique?",
+      options: [
+        "Dropout",
+        "L2 regularization",
+        "Batch normalization",
+        "Gradient clipping"
+      ],
+      correct: 3,
+      explanation: "Gradient clipping is used to prevent exploding gradients, not for regularization. The other options are all regularization techniques."
+    },
+    {
+      question: "What does the learning rate control in gradient descent?",
+      options: [
+        "The size of each parameter update",
+        "The number of epochs",
+        "The batch size",
+        "The network architecture"
+      ],
+      correct: 0,
+      explanation: "The learning rate determines the size of steps taken during gradient descent optimization."
+    }
+  ]}
+/>
+
+## Tabbed Content
+
+Organize related content with tabs:
+
+<Tabs 
+  tabs={[
+    {
+      label: "Python",
+      content: (
+        <div>
+          <h4>Python Implementation</h4>
+          <pre className="language-python">
+            <code>{`import numpy as np
+
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+def relu(x):
+    return np.maximum(0, x)
+
+# Example usage
+x = np.array([-2, -1, 0, 1, 2])
+print(f"Sigmoid: {sigmoid(x)}")
+print(f"ReLU: {relu(x)}")`}</code>
+          </pre>
+        </div>
+      )
+    },
+    {
+      label: "JavaScript",
+      content: (
+        <div>
+          <h4>JavaScript Implementation</h4>
+          <pre className="language-javascript">
+            <code>{`function sigmoid(x) {
+  return 1 / (1 + Math.exp(-x));
+}
+
+function relu(x) {
+  return Math.max(0, x);
+}
+
+// Example usage
+const values = [-2, -1, 0, 1, 2];
+console.log('Sigmoid:', values.map(sigmoid));
+console.log('ReLU:', values.map(relu));`}</code>
+          </pre>
+        </div>
+      )
+    },
+    {
+      label: "Math",
+      content: (
+        <div>
+          <h4>Mathematical Definitions</h4>
+          <p><strong>Sigmoid Function:</strong></p>
+          <p>σ(x) = 1 / (1 + e^(-x))</p>
+          <br />
+          <p><strong>ReLU Function:</strong></p>
+          <p>ReLU(x) = max(0, x)</p>
+        </div>
+      )
+    }
+  ]}
+/>
+
+## Audio Player
+
+For audio-related content, use the custom audio player:
+
+<AudioPlayer 
+  src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+  title="Sample Audio - Electronic Music"
+/>
+
+Note: Make sure to use audio files that are hosted on your server or have proper CORS headers.
+
+## Combining Components
+
+You can combine multiple components to create rich, interactive learning experiences:
+
+### Neural Network Training Visualization
+
+<Tabs 
+  tabs={[
+    {
+      label: "Concept",
+      content: (
+        <div>
+          <h4>Understanding Gradient Descent</h4>
+          <p>Gradient descent is an optimization algorithm used to minimize the loss function in neural networks. It iteratively adjusts parameters in the opposite direction of the gradient.</p>
+        </div>
+      )
+    },
+    {
+      label: "Visualization",
+      content: (
+        <div>
+          <InteractiveChart 
+            title="Loss Over Epochs"
+            type="line"
+            data={[
+              { name: 'Epoch 0', value: 2.5 },
+              { name: 'Epoch 10', value: 1.8 },
+              { name: 'Epoch 20', value: 1.2 },
+              { name: 'Epoch 30', value: 0.8 },
+              { name: 'Epoch 40', value: 0.5 },
+              { name: 'Epoch 50', value: 0.3 },
+            ]}
+            color="#10B981"
+          />
+        </div>
+      )
+    },
+    {
+      label: "Code",
+      content: (
+        <div>
+          <CodePlayground 
+            title="Gradient Descent Simulation"
+            initialCode={`// Simple gradient descent simulation
+let x = 5;  // Starting point
+const learningRate = 0.1;
+const iterations = 10;
+
+// Objective: minimize f(x) = x^2
+console.log('Minimizing f(x) = x^2');
+console.log('Starting x:', x);
+
+for (let i = 0; i < iterations; i++) {
+  const gradient = 2 * x;  // df/dx = 2x
+  x = x - learningRate * gradient;
+  const loss = x * x;
+  console.log(\`Iteration \${i + 1}: x = \${x.toFixed(4)}, loss = \${loss.toFixed(4)}\`);
+}`}
+          />
+        </div>
+      )
+    }
+  ]}
+/>
+
+## Tips for Using Interactive Components
+
+1. **Code Playground**: Great for teaching programming concepts, algorithms, or demonstrating code behavior
+2. **Interactive Charts**: Perfect for visualizing data trends, model performance, or statistical concepts
+3. **Quizzes**: Excellent for reinforcing learning and testing comprehension
+4. **Tabs**: Useful for presenting multiple perspectives or implementations of the same concept
+5. **Audio Player**: Essential for audio processing tutorials or podcast-style content
+
+## How to Use in Your MDX Files
+
+To use these components in your MDX blog posts, simply include them as JSX elements:
+
+```mdx
+<CodePlayground 
+  title="Your Title"
+  initialCode={`// Your code here`}
+/>
+
+<InteractiveChart 
+  title="Chart Title"
+  type="line"
+  data={yourDataArray}
+/>
+
+<Quiz 
+  title="Quiz Title"
+  questions={questionsArray}
+/>
+
+<Tabs 
+  tabs={tabsArray}
+/>
+
+<AudioPlayer 
+  src="path/to/audio.mp3"
+  title="Audio Title"
+/>
+```
+
+## Conclusion
+
+These interactive components transform static blog posts into engaging, hands-on learning experiences. They're particularly valuable for technical content where readers benefit from experimentation and immediate feedback.
+
+Feel free to mix and match these components to create rich, interactive content that keeps your readers engaged and helps them learn more effectively!

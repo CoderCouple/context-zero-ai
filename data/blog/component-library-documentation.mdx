@@ -1,0 +1,477 @@
+---
+title: 'Interactive Component Library Documentation'
+date: '2024-03-22'
+lastmod: '2024-03-22'
+tags: ['deep-learning', 'tutorial']
+draft: false
+summary: 'Complete documentation for all reusable interactive components available in this blog. Learn how to use visualizers, code playgrounds, and more.'
+images: ['/static/images/components-library.jpg']
+authors: ['default']
+layout: PostLayout
+canonicalUrl: https://your-domain.com/blog/component-library-documentation
+---
+
+## Interactive Component Library
+
+This blog features a comprehensive library of reusable interactive components designed to make learning more engaging. All components are:
+
+- ✅ **Reusable** - Use in any MDX blog post
+- ✅ **Configurable** - Customizable through props
+- ✅ **Responsive** - Work on all screen sizes
+- ✅ **Dark mode compatible** - Adapt to theme automatically
+- ✅ **Self-contained** - No external dependencies needed
+
+## Available Components
+
+### 1. WaveVisualizer
+
+Interactive sound wave visualizer for exploring audio properties.
+
+```mdx
+<WaveVisualizer 
+  title="Sound Wave Properties"
+  showHarmonics={true}
+  showPhase={true}
+/>
+```
+
+**Props:**
+- `title` (string): Component title
+- `showHarmonics` (boolean): Enable harmonic controls
+- `showPhase` (boolean): Enable phase control
+
+**Example:**
+
+<WaveVisualizer 
+  title="Example: Explore Wave Properties"
+  showHarmonics={true}
+  showPhase={true}
+/>
+
+---
+
+### 2. SamplingVisualizer
+
+Demonstrates digital audio concepts: waveforms, sample rate, and bit depth.
+
+```mdx
+<SamplingVisualizer 
+  title="Digital Audio Concepts"
+/>
+```
+
+**Props:**
+- `title` (string): Component title
+
+**Example:**
+
+<SamplingVisualizer 
+  title="Example: Sample Rate & Bit Depth"
+/>
+
+---
+
+### 3. CodePlayground
+
+Live JavaScript code editor and executor.
+
+```mdx
+<CodePlayground 
+  title="JavaScript Example"
+  initialCode={`console.log('Hello World');`}
+  language="javascript"
+/>
+```
+
+**Props:**
+- `title` (string): Component title
+- `initialCode` (string): Starting code
+- `language` (string): Programming language (currently JavaScript)
+
+**Example:**
+
+<CodePlayground 
+  title="Example: Array Methods"
+  initialCode={`// Try editing and running this code!
+const numbers = [1, 2, 3, 4, 5];
+
+const doubled = numbers.map(x => x * 2);
+console.log('Doubled:', doubled);
+
+const sum = numbers.reduce((a, b) => a + b, 0);
+console.log('Sum:', sum);`}
+/>
+
+---
+
+### 4. PythonSimulator
+
+Simplified Python code simulator for demonstrations.
+
+```mdx
+<PythonSimulator
+  title="Python Demo"
+  initialCode={`print("Hello Python")`}
+/>
+```
+
+**Props:**
+- `title` (string): Component title
+- `initialCode` (string): Starting Python code
+
+**Example:**
+
+<PythonSimulator
+  title="Example: Python Basics"
+  initialCode={`# Python simulator example
+x = 10
+y = 20
+result = x + y
+
+print(f"x = {x}")
+print(f"y = {y}")
+print(f"x + y = {result}")
+
+# Arrays (simplified numpy)
+data = np.zeros(5)
+print(f"Array shape: {data.shape}")`}
+/>
+
+---
+
+### 5. InteractiveChart
+
+Dynamic data visualization with line and bar charts.
+
+```mdx
+<InteractiveChart 
+  title="Data Visualization"
+  type="line"
+  data={[
+    { name: 'Jan', value: 100, value2: 80 },
+    { name: 'Feb', value: 120, value2: 90 }
+  ]}
+  color="#3B82F6"
+  color2="#10B981"
+/>
+```
+
+**Props:**
+- `title` (string): Chart title
+- `type` ('line' | 'bar'): Chart type
+- `data` (array): Data points with `name`, `value`, optional `value2`
+- `color` (string): Primary series color
+- `color2` (string): Secondary series color
+
+**Example:**
+
+<InteractiveChart 
+  title="Example: Performance Metrics"
+  type="line"
+  data={[
+    { name: 'Week 1', value: 65, value2: 58 },
+    { name: 'Week 2', value: 78, value2: 72 },
+    { name: 'Week 3', value: 85, value2: 81 },
+    { name: 'Week 4', value: 92, value2: 89 },
+  ]}
+  color="#8B5CF6"
+  color2="#EC4899"
+/>
+
+---
+
+### 6. Quiz
+
+Interactive quiz component with scoring and feedback.
+
+```mdx
+<Quiz 
+  title="Knowledge Check"
+  questions={[
+    {
+      question: "What is 2 + 2?",
+      options: ["3", "4", "5", "6"],
+      correct: 1,
+      explanation: "2 + 2 equals 4"
+    }
+  ]}
+/>
+```
+
+**Props:**
+- `title` (string): Quiz title
+- `questions` (array): Array of question objects
+  - `question` (string): Question text
+  - `options` (string[]): Answer choices
+  - `correct` (number): Index of correct answer
+  - `explanation` (string): Optional explanation
+
+**Example:**
+
+<Quiz 
+  title="Example: Quick Quiz"
+  questions={[
+    {
+      question: "Which component is used for audio visualization?",
+      options: [
+        "CodePlayground",
+        "WaveVisualizer",
+        "InteractiveChart",
+        "Quiz"
+      ],
+      correct: 1,
+      explanation: "WaveVisualizer is specifically designed for audio wave visualization."
+    },
+    {
+      question: "What does the SamplingVisualizer demonstrate?",
+      options: [
+        "Code execution",
+        "Quiz creation",
+        "Digital audio concepts",
+        "Chart rendering"
+      ],
+      correct: 2,
+      explanation: "SamplingVisualizer shows waveforms, sample rate, and bit depth concepts."
+    }
+  ]}
+/>
+
+---
+
+### 7. Tabs
+
+Organize content in tabbed interface.
+
+```mdx
+<Tabs 
+  tabs={[
+    { 
+      label: "Tab 1", 
+      content: <div>Content 1</div> 
+    },
+    { 
+      label: "Tab 2", 
+      content: <div>Content 2</div> 
+    }
+  ]}
+  defaultTab={0}
+/>
+```
+
+**Props:**
+- `tabs` (array): Tab objects with `label` and `content`
+- `defaultTab` (number): Initially active tab index
+
+**Example:**
+
+<Tabs 
+  tabs={[
+    {
+      label: "Overview",
+      content: (
+        <div>
+          <h4>Component Overview</h4>
+          <p>This library contains 8 interactive components designed for educational content.</p>
+        </div>
+      )
+    },
+    {
+      label: "Usage",
+      content: (
+        <div>
+          <h4>How to Use</h4>
+          <p>Simply add the component tag in your MDX file with the appropriate props.</p>
+        </div>
+      )
+    },
+    {
+      label: "Tips",
+      content: (
+        <div>
+          <h4>Best Practices</h4>
+          <ul>
+            <li>Keep initial code examples simple</li>
+            <li>Provide clear titles</li>
+            <li>Use appropriate component for the content type</li>
+          </ul>
+        </div>
+      )
+    }
+  ]}
+/>
+
+---
+
+### 8. AudioPlayer
+
+Custom audio player with enhanced controls.
+
+```mdx
+<AudioPlayer 
+  src="https://example.com/audio.mp3"
+  title="Audio Title"
+/>
+```
+
+**Props:**
+- `src` (string): Audio file URL
+- `title` (string): Player title
+
+**Example:**
+
+<AudioPlayer 
+  src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+  title="Example: Sample Audio Track"
+/>
+
+---
+
+## Usage Guidelines
+
+### When to Use Each Component
+
+| Component | Best For | Example Use Cases |
+|-----------|----------|-------------------|
+| **WaveVisualizer** | Audio education | Sound properties, frequency, harmonics |
+| **SamplingVisualizer** | Digital audio | Sample rate, bit depth, quantization |
+| **CodePlayground** | JavaScript demos | Algorithms, web development |
+| **PythonSimulator** | Python concepts | Data processing, basic scripts |
+| **InteractiveChart** | Data visualization | Performance metrics, trends |
+| **Quiz** | Knowledge testing | Comprehension checks, practice |
+| **Tabs** | Content organization | Multiple examples, comparisons |
+| **AudioPlayer** | Audio content | Podcasts, music, sound samples |
+
+### Integration in MDX Files
+
+1. **Import Not Required**: Components are automatically available in MDX files
+2. **Use JSX Syntax**: Write components as JSX elements
+3. **Pass Props**: Configure components through props
+4. **Nest Content**: Some components accept JSX content as props
+
+### Example MDX File Structure
+
+```mdx
+---
+title: 'Your Blog Post'
+date: '2024-03-22'
+tags: ['topic']
+---
+
+## Introduction
+
+Your content here...
+
+## Interactive Demo
+
+<WaveVisualizer title="Sound Demo" />
+
+## Code Example
+
+<CodePlayground 
+  title="Try It"
+  initialCode={`console.log('Edit me!');`}
+/>
+
+## Conclusion
+
+Your summary...
+```
+
+## Advanced Examples
+
+### Combining Multiple Components
+
+You can create rich learning experiences by combining components:
+
+<Tabs 
+  tabs={[
+    {
+      label: "Visualizer",
+      content: <WaveVisualizer title="Audio Properties" showHarmonics={true} showPhase={false} />
+    },
+    {
+      label: "Code",
+      content: (
+        <CodePlayground 
+          title="Generate Sine Wave"
+          initialCode={`// Generate a sine wave
+const samples = 100;
+const frequency = 440; // A4 note
+const wave = [];
+
+for (let i = 0; i < samples; i++) {
+  const t = i / samples;
+  const value = Math.sin(2 * Math.PI * frequency * t);
+  wave.push(value.toFixed(3));
+}
+
+console.log('First 10 samples:', wave.slice(0, 10).join(', '));`}
+        />
+      )
+    },
+    {
+      label: "Quiz",
+      content: (
+        <Quiz 
+          title="Check Understanding"
+          questions={[
+            {
+              question: "What frequency is the A4 note?",
+              options: ["220 Hz", "440 Hz", "880 Hz", "1760 Hz"],
+              correct: 1,
+              explanation: "A4 (the A above middle C) has a frequency of 440 Hz."
+            }
+          ]}
+        />
+      )
+    }
+  ]}
+/>
+
+## Component Development
+
+### Adding New Components
+
+1. Create component in `/components/MDXComponents/`
+2. Export from `/components/MDXComponents.tsx`
+3. Component is automatically available in all MDX files
+
+### Component Requirements
+
+- Must be client-side components (`'use client'`)
+- Should handle loading and error states
+- Must be responsive and theme-aware
+- Should provide meaningful defaults
+
+## Tips & Best Practices
+
+1. **Performance**: Components lazy-load for better performance
+2. **Accessibility**: All components support keyboard navigation
+3. **Mobile**: Test components on mobile devices
+4. **Content**: Keep examples concise and relevant
+5. **Documentation**: Always provide clear explanations
+
+## Troubleshooting
+
+### Common Issues
+
+- **Component not rendering**: Check prop syntax
+- **Dark mode issues**: Ensure using theme-aware classes
+- **Performance**: Large datasets may slow charts
+- **Audio playback**: Check CORS headers for audio files
+
+## Future Components
+
+Planned additions to the library:
+
+- **3D Visualizer**: Three.js-based 3D graphics
+- **Network Graph**: Interactive network diagrams
+- **Timeline**: Event timeline component
+- **Code Differ**: Side-by-side code comparison
+- **Math Renderer**: LaTeX equation rendering
+
+## Conclusion
+
+This component library enables creation of highly interactive and engaging educational content. Each component is designed to enhance learning through hands-on interaction and immediate feedback.
+
+Use these components to transform static blog posts into dynamic learning experiences!
