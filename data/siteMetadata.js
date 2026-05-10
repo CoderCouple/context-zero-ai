@@ -6,8 +6,8 @@ const siteMetadata = {
   description: 'Personal blog and portfolio showcasing my thoughts, projects, and journey',
   language: 'en-us',
   theme: 'system', // system, dark or light
-  siteUrl: 'https://your-domain.com',
-  siteRepo: 'https://github.com/yourusername/your-blog',
+  siteUrl: 'https://blog.suniltiwari.io',
+  siteRepo: 'https://github.com/CoderCouple/context-zero-ai',
   siteLogo: `${process.env.BASE_PATH || ''}/static/images/logo.png`,
   socialBanner: `${process.env.BASE_PATH || ''}/static/images/twitter-card.png`,
   mastodon: '',
