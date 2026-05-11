@@ -8,11 +8,6 @@
   "env": {
     "NEXT_PUBLIC_BASE_URL": "https://blog.context0.ai"
   },
-  "build": {
-    "env": {
-      "NODE_ENV": "production"
-    }
-  },
   "headers": [
     {
       "source": "/(.*)",

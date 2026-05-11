@@ -38,15 +38,19 @@ const Header = () => {
         <div className="no-scrollbar max-w-40 md:max-w-72 lg:max-w-96 hidden items-center gap-x-4 overflow-x-auto sm:flex">
           {headerNavLinks
             .filter((link) => link.href !== '/')
-            .map((link) => (
-              <Link
-                key={link.title}
-                href={link.href}
-                className="m-1 font-medium text-gray-900 hover:text-primary-500 dark:text-gray-100 dark:hover:text-primary-400"
-              >
-                {link.title}
-              </Link>
-            ))}
+            .map((link) => {
+              const className =
+                'm-1 font-medium text-gray-900 hover:text-primary-500 dark:text-gray-100 dark:hover:text-primary-400'
+              return link.href.startsWith('http') ? (
+                <a key={link.title} href={link.href} className={className}>
+                  {link.title}
+                </a>
+              ) : (
+                <Link key={link.title} href={link.href} className={className}>
+                  {link.title}
+                </Link>
+              )
+            })}
         </div>
         <SearchButton />
         <ThemeSwitch />

@@ -100,24 +100,14 @@ export default function ProfilePage() {
                   <p className="mb-2 text-sm text-gray-600 dark:text-gray-400">
                     A full-stack web application built with Next.js and Node.js
                   </p>
-                  <Link
-                    href="#"
-                    className="text-sm text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                  >
-                    View Project →
-                  </Link>
+                  <span className="text-sm text-gray-400 dark:text-gray-500">View Project →</span>
                 </div>
                 <div className="rounded-lg border border-gray-200 p-4 dark:border-gray-700">
                   <h3 className="mb-2 font-semibold">Project Two</h3>
                   <p className="mb-2 text-sm text-gray-600 dark:text-gray-400">
                     Mobile-first responsive design with advanced animations
                   </p>
-                  <Link
-                    href="#"
-                    className="text-sm text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                  >
-                    View Project →
-                  </Link>
+                  <span className="text-sm text-gray-400 dark:text-gray-500">View Project →</span>
                 </div>
               </div>
             </div>

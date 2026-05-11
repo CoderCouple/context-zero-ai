@@ -64,7 +64,11 @@ export default [
       'react/no-unescaped-entities': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-var-requires': 'off',
+      '@typescript-eslint/no-require-imports': 'off',
       '@typescript-eslint/ban-ts-comment': 'off',
+      '@typescript-eslint/no-explicit-any': 'warn',
+      'jsx-a11y/label-has-associated-control': 'warn',
+      'jsx-a11y/media-has-caption': 'off',
     },
   },
 ]

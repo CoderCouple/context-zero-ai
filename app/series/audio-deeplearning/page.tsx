@@ -12,13 +12,6 @@ export const metadata = genPageMetadata({
 
 const chapters = [
   {
-    number: 0,
-    title: 'Introduction to the Series',
-    slug: 'audio-deeplearning-00-introduction',
-    description: "Overview of what we'll cover in this deep learning for audio series",
-    status: 'published',
-  },
-  {
     number: 1,
     title: 'Audio Fundamentals',
     slug: 'audio-deeplearning-01-fundamentals',
@@ -30,14 +23,14 @@ const chapters = [
     title: 'Signal Processing Basics',
     slug: 'audio-deeplearning-02-signal-processing',
     description: 'FFT, spectrograms, MFCCs, and other audio feature extraction techniques',
-    status: 'published',
+    status: 'coming-soon',
   },
   {
     number: 3,
     title: 'Introduction to Audio Deep Learning',
     slug: 'audio-deeplearning-03-intro-dl',
     description: 'Overview of neural networks for audio processing and common architectures',
-    status: 'published',
+    status: 'coming-soon',
   },
   {
     number: 4,

@@ -1,5 +1,5 @@
 ---
-title: 'Chapter 2: Signal Processing for Audio Deep Learning'
+title: '[Coming Soon] Chapter 2: Signal Processing for Audio Deep Learning'
 date: '2024-03-22'
 lastmod: '2024-03-22'
 tags: ['audio-deeplearning', 'deep-learning']
@@ -98,7 +98,7 @@ magnitude_db = librosa.amplitude_to_db(magnitude, ref=np.max)
 
 # Plot
 plt.figure(figsize=(14, 6))
-librosa.display.specshow(magnitude_db, y_axis='hz', x_axis='time', 
+librosa.display.specshow(magnitude_db, y_axis='hz', x_axis='time',
                          sr=sr, hop_length=hop_length)
 plt.colorbar(format='%+2.0f dB')
 plt.title('STFT Magnitude Spectrogram - Chirp Signal')
@@ -156,33 +156,33 @@ plt.show()
 ```python
 def explore_stft_parameters(signal, sr):
     """Explore how STFT parameters affect the spectrogram"""
-    
+
     fig, axes = plt.subplots(3, 2, figsize=(14, 12))
-    
+
     # Different window sizes
     window_sizes = [512, 1024, 2048]
     for i, n_fft in enumerate(window_sizes):
         D = librosa.stft(signal, n_fft=n_fft, hop_length=n_fft//2)
         mag_db = librosa.amplitude_to_db(np.abs(D), ref=np.max)
-        
+
         axes[i, 0].imshow(mag_db, aspect='auto', origin='lower')
         axes[i, 0].set_title(f'Window Size: {n_fft} samples')
         axes[i, 0].set_ylabel('Frequency Bin')
-        
+
     # Different hop lengths (overlap)
     hop_lengths = [64, 256, 512]
     n_fft = 1024
     for i, hop in enumerate(hop_lengths):
         D = librosa.stft(signal, n_fft=n_fft, hop_length=hop)
         mag_db = librosa.amplitude_to_db(np.abs(D), ref=np.max)
-        
+
         axes[i, 1].imshow(mag_db, aspect='auto', origin='lower')
         axes[i, 1].set_title(f'Hop Length: {hop} ({100*(1-hop/n_fft):.0f}% overlap)')
         axes[i, 1].set_ylabel('Frequency Bin')
-    
+
     axes[2, 0].set_xlabel('Time Frame')
     axes[2, 1].set_xlabel('Time Frame')
-    
+
     plt.suptitle('Effect of STFT Parameters on Spectrograms')
     plt.tight_layout()
     plt.show()
@@ -230,33 +230,33 @@ def create_mel_filterbank(sr, n_fft, n_mels=40):
     # Frequency points
     low_freq = 0
     high_freq = sr / 2
-    
+
     # Mel points
     low_mel = hz_to_mel(low_freq)
     high_mel = hz_to_mel(high_freq)
-    
+
     # Equally spaced mel points
     mel_points = np.linspace(low_mel, high_mel, n_mels + 2)
     hz_points = mel_to_hz(mel_points)
-    
+
     # FFT bin frequencies
     bin_freqs = np.linspace(0, sr/2, n_fft//2 + 1)
-    
+
     # Create filterbank
     filterbank = np.zeros((n_mels, n_fft//2 + 1))
-    
+
     for i in range(1, n_mels + 1):
         # Triangle filter
         left = hz_points[i - 1]
         center = hz_points[i]
         right = hz_points[i + 1]
-        
+
         for j, freq in enumerate(bin_freqs):
             if left <= freq < center:
                 filterbank[i-1, j] = (freq - left) / (center - left)
             elif center <= freq < right:
                 filterbank[i-1, j] = (right - freq) / (right - center)
-    
+
     return filterbank, bin_freqs
 
 # Create and visualize mel filterbank
@@ -314,21 +314,21 @@ Mel-frequency Cepstral Coefficients (MFCCs) are compact features that capture th
 ```python
 def compute_mfcc_step_by_step(y, sr):
     """Compute MFCCs step by step for understanding"""
-    
+
     # Step 1: Compute mel spectrogram
     mel_spec = librosa.feature.melspectrogram(y=y, sr=sr, n_mels=128)
-    
+
     # Step 2: Convert to log scale
     log_mel_spec = librosa.power_to_db(mel_spec)
-    
+
     # Step 3: Apply DCT (Discrete Cosine Transform)
     from scipy.fftpack import dct
     mfcc = dct(log_mel_spec, type=2, axis=0, norm='ortho')
-    
+
     # Keep only first N coefficients
     n_mfcc = 13
     mfcc = mfcc[:n_mfcc]
-    
+
     return mfcc
 
 # Load audio
@@ -397,19 +397,19 @@ plt.show()
 ```python
 def extract_spectral_features(y, sr):
     """Extract various spectral features"""
-    
+
     # Spectral centroid - "center of mass" of spectrum
     centroid = librosa.feature.spectral_centroid(y=y, sr=sr)
-    
+
     # Spectral rolloff - frequency below which 85% of energy is contained
     rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
-    
+
     # Spectral bandwidth - spread of frequencies
     bandwidth = librosa.feature.spectral_bandwidth(y=y, sr=sr)
-    
+
     # Zero crossing rate - rate of sign changes
     zcr = librosa.feature.zero_crossing_rate(y)
-    
+
     return centroid, rolloff, bandwidth, zcr
 
 # Extract features
@@ -453,23 +453,23 @@ Augmentation is crucial for training robust models:
 def augment_audio(y, sr):
     """Various audio augmentation techniques"""
     augmented = {}
-    
+
     # Time stretching
     augmented['stretched'] = librosa.effects.time_stretch(y, rate=1.2)
     augmented['compressed'] = librosa.effects.time_stretch(y, rate=0.8)
-    
+
     # Pitch shifting
     augmented['pitch_up'] = librosa.effects.pitch_shift(y, sr=sr, n_steps=2)
     augmented['pitch_down'] = librosa.effects.pitch_shift(y, sr=sr, n_steps=-2)
-    
+
     # Add noise
     noise = np.random.randn(len(y))
     augmented['noisy'] = y + 0.005 * noise
-    
+
     # Change volume
     augmented['louder'] = y * 2
     augmented['quieter'] = y * 0.5
-    
+
     return augmented
 
 # Load and augment
@@ -508,29 +508,29 @@ class AudioFeaturePipeline:
         self.sr = sr
         self.n_mfcc = n_mfcc
         self.n_mels = n_mels
-        
+
     def extract_features(self, audio_path):
         """Extract multiple feature types"""
         # Load audio
         y, _ = librosa.load(audio_path, sr=self.sr)
-        
+
         features = {}
-        
+
         # Mel spectrogram
         features['mel_spectrogram'] = librosa.feature.melspectrogram(
             y=y, sr=self.sr, n_mels=self.n_mels
         )
-        
+
         # MFCCs
         features['mfcc'] = librosa.feature.mfcc(
             y=y, sr=self.sr, n_mfcc=self.n_mfcc
         )
-        
+
         # Chroma
         features['chroma'] = librosa.feature.chroma_stft(
             y=y, sr=self.sr
         )
-        
+
         # Spectral features
         features['spectral_centroid'] = librosa.feature.spectral_centroid(
             y=y, sr=self.sr
@@ -538,34 +538,34 @@ class AudioFeaturePipeline:
         features['spectral_rolloff'] = librosa.feature.spectral_rolloff(
             y=y, sr=self.sr
         )
-        
+
         return features
-    
+
     def prepare_for_model(self, features, feature_type='mel_spectrogram'):
         """Prepare features for neural network input"""
         feat = features[feature_type]
-        
+
         # Convert to dB scale if spectrogram
         if 'spectrogram' in feature_type:
             feat = librosa.power_to_db(feat, ref=np.max)
-        
+
         # Normalize
         feat = (feat - np.mean(feat)) / np.std(feat)
-        
+
         # Add channel dimension for CNN
         feat = np.expand_dims(feat, axis=0)
-        
+
         return feat
-    
+
     def batch_process(self, audio_paths):
         """Process multiple audio files"""
         batch_features = []
-        
+
         for path in audio_paths:
             features = self.extract_features(path)
             prepared = self.prepare_for_model(features)
             batch_features.append(prepared)
-        
+
         return np.array(batch_features)
 
 # Example usage
@@ -611,16 +611,16 @@ for task, info in feature_selection.items():
 def create_preprocessing_pipeline():
     """Create consistent preprocessing for all audio"""
     from functools import partial
-    
+
     # Define preprocessing steps
     steps = [
         ('load', partial(librosa.load, sr=22050, mono=True)),
         ('trim_silence', partial(librosa.effects.trim, top_db=20)),
         ('normalize', lambda y: y / np.max(np.abs(y))),
-        ('extract_features', partial(librosa.feature.melspectrogram, 
+        ('extract_features', partial(librosa.feature.melspectrogram,
                                     sr=22050, n_mels=128))
     ]
-    
+
     return steps
 ```
 
@@ -660,5 +660,5 @@ We now have the tools to transform raw audio into meaningful features. In the ne
 
 ---
 
-*Previous: [Chapter 1 - Audio Fundamentals →](/blog/audio-deeplearning-01-fundamentals)*  
-*Next: [Chapter 3 - Introduction to Audio Deep Learning →](/blog/audio-deeplearning-03-intro-dl)*
+_Previous: [Chapter 1 - Audio Fundamentals →](/blog/audio-deeplearning-01-fundamentals)_  
+_Next: [Chapter 3 - Introduction to Audio Deep Learning →](/blog/audio-deeplearning-03-intro-dl)_

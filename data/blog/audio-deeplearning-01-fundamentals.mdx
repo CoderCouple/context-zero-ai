@@ -15,7 +15,8 @@ canonicalUrl: https://blog.suniltiwari.io/blog/audio-deeplearning-01-fundamental
 
 Before we can teach machines to understand audio, we need to understand it ourselves. This chapter covers the fundamental concepts of audio - from the physics of sound waves to how computers represent and process audio data.
 
-## Physics Behind Sound: Understanding Wave Types
+<details>
+<summary>**Physics Behind Sound: Understanding Wave Types** (click to expand)</summary>
 
 Before diving into digital audio, let's understand the fundamental physics of sound. Sound is just one type of wave in our universe, and understanding its place in the wave spectrum helps us appreciate its unique properties.
 
@@ -130,6 +131,8 @@ Waves exhibit double periodicity:
 1. **Periodic in TIME**: Repeats at regular time intervals (the period)
 2. **Periodic in SPACE**: Repeats at regular spatial intervals (the wavelength)
 
+</details>
+
 ## What is Sound?
 
 Sound is a mechanical wave that propagates through a medium (usually air) as variations in pressure. These pressure variations cause our eardrums to vibrate, which our brain interprets as sound.
@@ -159,7 +162,8 @@ Sound is a mechanical wave that propagates through a medium (usually air) as var
    - Why a piano and guitar playing the same note sound different
    - Determined by harmonics and overtones (try adding harmonics in the visualizer above!)
 
-## Sound Frequency Classification: What We Can and Cannot Hear
+<details>
+<summary>**Sound Frequency Classification: What We Can and Cannot Hear** (click to expand)</summary>
 
 Sound waves are classified by their frequency ranges, and not all of them are audible to humans. Understanding these classifications is crucial for audio engineering and deep learning applications.
 
@@ -326,13 +330,11 @@ For music analysis, we need:
 - 44.1 kHz or 48 kHz sampling rate
 - Careful handling of bass and treble information
 
+</details>
+
 ## Analog to Digital: Capturing Sound
 
-To work with audio on computers, we need to convert continuous analog signals to discrete digital representations. This involves three fundamental concepts: **waveforms**, **sample rate**, and **bit depth**.
-
-### Converting Analog to Digital
-
-To work with audio on computers, continuous analog waveforms must become digital audio through sampling and quantization. The sample rate determines how often we take "snapshots" of the wave, and bit depth controls the precision of each measurement.
+To work with audio on computers, we need to convert continuous analog signals to discrete digital representations through sampling and quantization. This involves three fundamental concepts: **waveforms**, **sample rate**, and **bit depth**.
 
 ### Key Digital Audio Concepts
 
@@ -359,7 +361,13 @@ A **waveform** is simply air pressure changing over time. When you speak, your v
 
 The standard for speech is 24 kHz × 16-bit, which you'll see in code like:
 
-When working with digital audio, the data is typically stored as arrays of values. For example, 3 seconds of audio at 24 kHz sampling rate would have 72,000 samples. At 16-bit depth, this would result in a file size of approximately 281.25 KB.
+```python
+import librosa
+audio, sr = librosa.load("speech.wav", sr=24000, mono=True)
+# audio.shape == (72000,) for a 3-second clip; sr == 24000
+```
+
+Three seconds at 24 kHz produces 72,000 samples; at 16-bit (2 bytes/sample) that's roughly 281 KB on disk.
 
 ### The Sampling Process in Detail
 
@@ -369,33 +377,12 @@ When working with digital audio, the data is typically stored as arrays of value
 
 For a 440 Hz signal (A4 note), here's how different sampling rates perform:
 
-**8000 Hz:**
-
-- Samples in 10ms: 80
-- Time between samples: 0.125ms
-- Max frequency (Nyquist): 4000 Hz
-- ✓ Can capture 440 Hz signal
-
-**16000 Hz:**
-
-- Samples in 10ms: 160
-- Time between samples: 0.062ms
-- Max frequency (Nyquist): 8000 Hz
-- ✓ Can capture 440 Hz signal
-
-**24000 Hz:**
-
-- Samples in 10ms: 240
-- Time between samples: 0.042ms
-- Max frequency (Nyquist): 12000 Hz
-- ✓ Can capture 440 Hz signal
-
-**44100 Hz:**
-
-- Samples in 10ms: 441
-- Time between samples: 0.023ms
-- Max frequency (Nyquist): 22050 Hz
-- ✓ Can capture 440 Hz signal
+| Sample Rate | Samples in 10 ms | Time Between Samples | Max Frequency (Nyquist) | Captures 440 Hz? |
+| ----------- | ---------------- | -------------------- | ----------------------- | ---------------- |
+| 8 000 Hz    | 80               | 0.125 ms             | 4 000 Hz                | ✓                |
+| 16 000 Hz   | 160              | 0.062 ms             | 8 000 Hz                | ✓                |
+| 24 000 Hz   | 240              | 0.042 ms             | 12 000 Hz               | ✓                |
+| 44 100 Hz   | 441              | 0.023 ms             | 22 050 Hz               | ✓                |
 
 ### Nyquist-Shannon Sampling Theorem
 
@@ -418,148 +405,151 @@ After sampling, we need to represent each sample's amplitude as a digital value.
 
 For example, quantizing a value of 0.7234:
 
-**2-bit quantization:**
-
-- Levels available: 4
-- Quantized value: 0.666667
-- Error: 5.67%
-
-**4-bit quantization:**
-
-- Levels available: 16
-- Quantized value: 0.733333
-- Error: 1.29%
-
-**8-bit quantization:**
-
-- Levels available: 256
-- Quantized value: 0.723529
-- Error: 0.01%
-
-**16-bit quantization:**
-
-- Levels available: 65536
-- Quantized value: 0.723404
-- Error: < 0.01%
+| Bit Depth | Levels Available | Quantized Value | Error   |
+| --------- | ---------------- | --------------- | ------- |
+| 2-bit     | 4                | 0.666667        | 5.67%   |
+| 4-bit     | 16               | 0.733333        | 1.29%   |
+| 8-bit     | 256              | 0.723529        | 0.01%   |
+| 16-bit    | 65 536           | 0.723404        | < 0.01% |
 
 Notice how more bits = less error!
 
-Common bit depths:
+**Common bit depths:**
 
-- **8-bit**: 256 levels (telephone quality)
-- **16-bit**: 65,536 levels (CD quality)
-- **24-bit**: 16,777,216 levels (professional recording)
-- **32-bit float**: Scientific computing
+| Bit Depth    | Levels     | Typical Use            |
+| ------------ | ---------- | ---------------------- |
+| 8-bit        | 256        | Telephone quality      |
+| 16-bit       | 65 536     | CD quality             |
+| 24-bit       | 16 777 216 | Professional recording |
+| 32-bit float | —          | Scientific computing   |
 
 ## Digital Audio Representation
 
 ### Time Domain: Waveform
 
-The waveform is the most direct representation - amplitude values over time:
-
-The waveform is the most direct representation of audio - amplitude values over time. A complex waveform can include multiple harmonics (multiples of the fundamental frequency) and an envelope (how the amplitude changes over time). For example, a musical note might have a fundamental frequency of 220 Hz (A3) with several harmonics and an exponential decay envelope.
+The waveform is the most direct representation of audio — amplitude values over time. A complex waveform can include multiple harmonics (integer multiples of the fundamental frequency) and an envelope (how the amplitude changes over time). For example, a musical note might have a fundamental frequency of 220 Hz (A3) with several harmonics and an exponential decay envelope.
 
 ### Audio File Formats
 
 Different formats store audio data in various ways:
 
-Different audio formats store data in various ways:
-
-**WAV:**
-
-- Compression: None (lossless)
-- Quality: Perfect
-- File size: Large
-- Use case: Professional audio, archiving
-
-**MP3:**
-
-- Compression: Lossy (psychoacoustic)
-- Quality: Good (depends on bitrate)
-- File size: Small (~10% of WAV)
-- Use case: Music distribution, streaming
-
-**FLAC:**
-
-- Compression: Lossless
-- Quality: Perfect
-- File size: Medium (~50-70% of WAV)
-- Use case: Audiophile music, archiving
-
-**OGG:**
-
-- Compression: Lossy (Vorbis)
-- Quality: Good to excellent
-- File size: Small
-- Use case: Open-source applications, games
+| Format | Compression            | Quality             | File Size           | Typical Use Case              |
+| ------ | ---------------------- | ------------------- | ------------------- | ----------------------------- |
+| WAV    | None (lossless)        | Perfect             | Large               | Professional audio, archiving |
+| MP3    | Lossy (psychoacoustic) | Good (bitrate-dep.) | Small (~10% of WAV) | Music distribution, streaming |
+| FLAC   | Lossless               | Perfect             | Medium (~50–70%)    | Audiophile music, archiving   |
+| OGG    | Lossy (Vorbis)         | Good to excellent   | Small               | Open-source apps, games       |
 
 ### Loading and Saving Audio
 
 Different libraries can be used to load and save audio:
 
-- **Librosa**: Converts to mono, normalizes to [-1, 1]
-- **Soundfile**: Preserves original format
-- **Scipy**: Returns integer values
-- **Torchaudio**: Returns PyTorch tensors
+| Library    | Behavior                                |
+| ---------- | --------------------------------------- |
+| Librosa    | Converts to mono, normalizes to [-1, 1] |
+| Soundfile  | Preserves original format               |
+| Scipy      | Returns integer values                  |
+| Torchaudio | Returns PyTorch tensors                 |
+
+A minimal example with each:
+
+```python
+# Librosa — mono float32 in [-1, 1]
+import librosa
+audio, sr = librosa.load("clip.wav", sr=16000, mono=True)
+
+# Soundfile — preserves channels and dtype
+import soundfile as sf
+audio, sr = sf.read("clip.wav")
+
+# Torchaudio — returns a torch.Tensor of shape (channels, samples)
+import torchaudio
+waveform, sr = torchaudio.load("clip.wav")
+```
 
 Each library has its own advantages depending on your use case.
-
-## Audio Characteristics for Deep Learning
-
-### Dynamic Range
-
-The ratio between the loudest and quietest parts of an audio signal:
-
-### Signal-to-Noise Ratio (SNR)
-
-Measure of signal quality:
-
-## Practical Considerations for Deep Learning
-
-### 1. Normalization
-
-Always normalize audio data for neural networks:
-
-### 2. Resampling
-
-Match all audio to the same sampling rate:
-
-### 3. Padding and Trimming
-
-Ensure consistent input sizes:
-
-## Hands-On Exercise: Audio Data Explorer
-
-Let's build a tool to explore audio characteristics:
 
 ## Key Takeaways
 
 1. **Sound is a wave**: Understanding wave properties helps us choose appropriate representations
 2. **Sampling theorem**: Sample at least 2× the highest frequency you want to capture
 3. **Digital representation**: Balance between quality (sampling rate, bit depth) and file size
-4. **Normalization is crucial**: Always normalize audio for deep learning
-5. **Know your format**: Different formats suit different applications
+4. **Know your format**: Different formats suit different applications — lossless for archiving, lossy for distribution
 
 ## Exercises
 
-1. **Experiment with Sampling Rates**:
-   - Record your voice at different sampling rates
-   - Listen to the differences
-   - Plot the waveforms and identify aliasing
-
-2. **Build a Format Converter**:
-   - Create a function that converts between WAV, FLAC, and MP3
-   - Compare file sizes and quality
-
-3. **Analyze Real Audio**:
-   - Download speech, music, and environmental sound samples
-   - Calculate and compare their statistics
-   - Identify characteristic differences
-
-4. **Noise Addition**:
-   - Add different types of noise (white, pink, brown) to clean audio
-   - Calculate SNR for each
-   - Listen and observe the differences
+<Quiz
+  title="Chapter 1 Knowledge Check"
+  questions={[
+    {
+      question: 'Sound waves in air are best classified as which type of wave?',
+      options: [
+        'Transverse mechanical wave',
+        'Longitudinal mechanical wave',
+        'Electromagnetic wave',
+        'Matter (de Broglie) wave',
+      ],
+      correct: 1,
+      explanation:
+        'Sound is a longitudinal mechanical wave: air molecules oscillate parallel to the direction of propagation, producing compressions and rarefactions.',
+    },
+    {
+      question:
+        'According to the Nyquist–Shannon sampling theorem, what is the minimum sample rate needed to faithfully represent a 4 kHz sine wave?',
+      options: ['2 kHz', '4 kHz', '8 kHz', '16 kHz'],
+      correct: 2,
+      explanation:
+        'You must sample at strictly more than twice the highest frequency present. For a 4 kHz signal, that minimum is just above 8 kHz.',
+    },
+    {
+      question: 'CD-quality audio uses which sample rate and bit depth?',
+      options: [
+        '22.05 kHz / 8-bit',
+        '44.1 kHz / 16-bit',
+        '48 kHz / 24-bit',
+        '96 kHz / 32-bit float',
+      ],
+      correct: 1,
+      explanation:
+        'The CD audio standard is 44.1 kHz sampling at 16-bit depth — 65,536 amplitude levels per sample.',
+    },
+    {
+      question: 'Which file format is lossless and typically smaller than an equivalent WAV file?',
+      options: ['MP3', 'OGG Vorbis', 'FLAC', 'AAC'],
+      correct: 2,
+      explanation:
+        'FLAC uses lossless compression: bit-perfect reconstruction with file sizes around 50–70% of WAV.',
+    },
+    {
+      question:
+        'Doubling the bit depth from 8-bit to 16-bit increases the number of quantization levels by a factor of:',
+      options: ['2', '8', '256', '65,536'],
+      correct: 2,
+      explanation:
+        '8-bit gives 2⁸ = 256 levels and 16-bit gives 2¹⁶ = 65,536 levels — a 256× increase, dramatically reducing quantization error.',
+    },
+    {
+      question: 'Why does sound travel faster in steel (~5,960 m/s) than in air (~343 m/s)?',
+      options: [
+        'Steel is hotter than air',
+        'Steel particles are packed more densely, transferring vibration energy more quickly',
+        'Air absorbs sound, steel does not',
+        'Sound travels at the speed of light in metals',
+      ],
+      correct: 1,
+      explanation:
+        'In denser, more rigid media, particles are closer together and more strongly coupled, so vibrations propagate faster.',
+    },
+    {
+      question:
+        'If you record audio at a 22 kHz sample rate, what is the highest frequency you can faithfully represent (the Nyquist frequency)?',
+      options: ['5.5 kHz', '11 kHz', '22 kHz', '44 kHz'],
+      correct: 1,
+      explanation:
+        'The Nyquist frequency is half the sample rate: 22 kHz / 2 = 11 kHz. Anything above 11 kHz in the source signal will alias.',
+    },
+  ]}
+/>
 
 ## What's Next?
 
@@ -567,5 +557,4 @@ Now that we understand how audio is represented digitally, we're ready to explor
 
 ---
 
-_Previous: [Introduction →](/blog/audio-deeplearning-00-introduction)_  
 _Next: [Chapter 2 - Signal Processing Basics →](/blog/audio-deeplearning-02-signal-processing)_

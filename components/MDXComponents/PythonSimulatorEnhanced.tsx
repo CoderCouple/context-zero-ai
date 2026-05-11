@@ -201,7 +201,7 @@ export default function PythonSimulatorEnhanced({
               value = variables[expression]
             }
             // Arithmetic expression (including ** for power)
-            else if (/[+\-*\/]/.test(expression) || expression.includes('**')) {
+            else if (/[+\-*/]/.test(expression) || expression.includes('**')) {
               try {
                 let evalExpr = expression
                 // Replace ** with Math.pow for safe evaluation
@@ -314,7 +314,7 @@ export default function PythonSimulatorEnhanced({
           }
         }
         // Handle arithmetic expressions (including **)
-        else if (/[+\-*\/]/.test(value) || value.includes('**')) {
+        else if (/[+\-*/]/.test(value) || value.includes('**')) {
           try {
             let evalExpr = value
             // Replace ** with Math.pow

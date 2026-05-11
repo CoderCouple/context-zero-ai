@@ -4,122 +4,70 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a personal blog and profile website built using the Tailwind Next.js Starter Blog template. It combines blogging functionality with a comprehensive profile/portfolio page.
-
-## Tech Stack
-
-- **Framework**: Next.js 14 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **Content**: MDX for blog posts
-- **Content Management**: Contentlayer
-- **Search**: KBar
-- **Comments**: Giscus (configurable)
-- **Analytics**: Umami (configurable)
+Personal blog and profile site built on the Tailwind Next.js Starter Blog template (Next.js 15 App Router, React 19, TypeScript, Tailwind 3, MDX via `contentlayer2` + `pliny`). Deployed to Vercel (`iad1`) at `blog.context0.ai`.
 
 ## Development Commands
 
 ```bash
-# Install dependencies
-npm install
-
-# Run development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Start production server
-npm run start
-
-# Run linting
-npm run lint
-
-# Type checking
-npm run typecheck
-
-# Format code
-npm run format
+npm install           # install deps (npm only — see lint-staged note below)
+npm run dev           # dev server (alias: `npm start` — both run `next dev`)
+npm run build         # contentlayer build + next build + scripts/postbuild.mjs (RSS, etc.)
+npm run serve         # production server (this is `next start`, NOT `npm start`)
+npm run lint          # next lint --fix on pages/app/components/lib/layouts/scripts
+npm run analyze       # ANALYZE=true next build — bundle analyzer report
 ```
 
-## Project Architecture
+There is no `typecheck` or `format` script. Run `npx tsc --noEmit` for type checking and `npx prettier --write <path>` for formatting. Husky's pre-commit hook runs lint-staged, which calls `npm run lint` and `npx prettier --write` on staged files.
 
-### Key Directories
+## Architecture
 
-- `/app` - Next.js App Router pages and layouts
-  - `/blog` - Blog listing and post pages
-  - `/profile` - Custom profile/portfolio page
-  - `/about` - About page using author MDX content
-  - `/projects` - Projects showcase page
-  - `/tags` - Tag-based blog filtering
-- `/components` - Reusable React components
-- `/layouts` - Page layout templates
-- `/data` - Site configuration and static data
-  - `siteMetadata.js` - Main site configuration
-  - `headerNavLinks.ts` - Navigation menu items
-  - `/blog` - Blog post MDX files
-  - `/authors` - Author profile MDX files
-- `/public` - Static assets
-- `/css` - Global styles and Tailwind configuration
+### Content pipeline (this is the load-bearing part)
 
-### Content Management
+`contentlayer.config.ts` is the source of truth for how MDX becomes data:
 
-Blog posts are written in MDX format and stored in `/data/blog/`. Each post supports:
-- Frontmatter metadata (title, date, tags, summary)
-- MDX components for rich content
-- Code syntax highlighting
-- Images and other media
+- **Document types**: `Blog` (`data/blog/**/*.mdx`) and `Authors` (`data/authors/**/*.mdx`). Blog frontmatter supports `layout` (selects a file from `/layouts`), `bibliography` (resolved against `data/`), `draft`, `images`, `tags`, etc.
+- **Computed fields** added to every doc: `readingTime`, `slug`, `path`, `filePath`, `toc`, plus `structuredData` (JSON-LD) for blogs.
+- **Build side effects** (run on every contentlayer build, including `npm run dev`):
+  - `createTagCount` writes `app/tag-data.json` — this file is generated, do not edit by hand.
+  - `createSearchIndex` writes `public/search.json` (path comes from `siteMetadata.search.kbarConfig.searchDocumentsPath`) for the KBar command palette.
+- **MDX plugins**: remark (gfm, math, code titles, github alerts, image-to-jsx, frontmatter extraction) + rehype (slug, autolink headings with a custom heroicon, katex, citations, prism-plus, minify). Adding a plugin means editing this file.
 
-Author information is stored in `/data/authors/` as MDX files.
+After `next build`, `scripts/postbuild.mjs` runs (`rss.mjs` is invoked from there) to generate the RSS feed.
 
-### Key Features
+### Layouts vs. components vs. pages
 
-1. **Blog System**: Full-featured blog with tags, search, and pagination
-2. **Profile Page**: Custom profile page at `/profile` showcasing:
-   - Personal information
-   - Skills
-   - Experience
-   - Projects
-   - Contact information
-3. **Dark Mode**: System-based or manual theme switching
-4. **SEO Optimized**: Built-in metadata generation and sitemap
-5. **Search**: KBar command palette for quick navigation
-6. **Comments**: Giscus integration for blog comments
-7. **Analytics**: Support for various analytics providers
+- `/app` — App Router routes. Pages typically pull MDX via contentlayer's `allBlogs`/`allAuthors`, then hand the doc to a layout.
+- `/layouts` — Page-level templates (`PostLayout`, `PostSimple`, `PostBanner`, `ListLayout`, `ListLayoutWithTags`, `AuthorLayout`). A blog post's `layout: PostBanner` frontmatter selects which one renders it. To add a new layout, drop a `.tsx` file here and reference it by filename in frontmatter.
+- `/components` — Reusable UI (Header, Footer, MDX components, Tag, ThemeSwitch, etc.). `MDXComponents.tsx` is the registry of components available inside MDX content.
+- `/data` — Site config (`siteMetadata.js`), nav (`headerNavLinks.ts`), projects (`projectsData.ts`), bibliography (`references-data.bib`), and content (`blog/`, `authors/`).
+- `/css` — global Tailwind layers and prism theme.
 
-## Configuration
+### Configuration surfaces
 
-Main configuration is in `/data/siteMetadata.js`:
-- Update site title, author, and social links
-- Configure analytics and comment providers
-- Set newsletter provider
+- `data/siteMetadata.js` — title, author, URLs, analytics provider, comments provider, newsletter provider, search provider. Most "where do I configure X" questions answer here.
+- `next.config.js` — strict CSP (allows giscus + umami; tighten/expand here if adding third-party scripts), security headers, SVG-as-component via `@svgr/webpack`, contentlayer + bundle-analyzer plugins. `EXPORT`, `BASE_PATH`, `UNOPTIMIZED` env vars switch the build into static-export mode.
+- `vercel.json` — pins region `iad1`, sets `NEXT_PUBLIC_BASE_URL`, layers a second set of security headers on top of `next.config.js`.
+- `.env.example` — Giscus, Mailchimp/Buttondown/ConvertKit/Klaviyo/EmailOctopus/Beehiiv newsletter keys. Only the providers selected in `siteMetadata.js` are actually used at runtime.
 
-## Adding Content
+## Adding content
 
-### New Blog Post
-Create a new MDX file in `/data/blog/`:
+### New blog post
+
+Create `data/blog/<slug>.mdx`:
+
 ```mdx
 ---
 title: 'Post Title'
-date: '2024-03-22'
+date: '2026-05-10'
 tags: ['tag1', 'tag2']
 draft: false
-summary: 'Post summary'
+summary: 'One-line summary used for SEO and listings.'
+layout: PostLayout # optional — one of /layouts/Post*.tsx
 ---
-
-Post content here...
 ```
 
-### Update Profile
-- Edit `/app/profile/page.tsx` for profile page structure
-- Update `/data/authors/default.mdx` for author bio
-- Modify skills, experience, and projects in the profile component
+Tag pages and the search index regenerate automatically on the next dev/build.
 
-## Environment Variables
+### Profile page
 
-Create `.env.local` for:
-- Analytics IDs
-- Comment system tokens
-- Newsletter API keys
-
-See `.env.example` for required variables.
+The `/profile` route is custom (not derived from MDX). Edit `app/profile/page.tsx` directly. The `/about` route, by contrast, renders `data/authors/default.mdx` through `AuthorLayout`.
