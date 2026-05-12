@@ -18,7 +18,7 @@ const Header = () => {
         <div className="flex items-center justify-between">
           <div className="mr-3">
             <img
-              src="/static/images/logo/color-logo-with-bg.png"
+              src="/static/images/logo/android_logo.png"
               alt="Context Zero Logo"
               width={120}
               height={120}

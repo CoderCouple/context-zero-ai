@@ -2,7 +2,7 @@
 const siteMetadata = {
   title: 'My Personal Blog & Portfolio',
   author: 'Sunil Tiwari',
-  headerTitle: 'ContextZero Blogs',
+  headerTitle: 'ContextZeroAI Blogs',
   description: 'Personal blog and portfolio showcasing my thoughts, projects, and journey',
   language: 'en-us',
   theme: 'system', // system, dark or light
