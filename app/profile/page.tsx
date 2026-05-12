@@ -5,9 +5,81 @@ import { genPageMetadata } from 'app/seo'
 import Image from '@/components/Image'
 import Link from '@/components/Link'
 import SocialIcon from '@/components/social-icons'
+import { Mail } from '@/components/social-icons/icons'
 import siteMetadata from '@/data/siteMetadata'
 
 export const metadata = genPageMetadata({ title: 'Profile' })
+
+const skills = [
+  'Python',
+  'TypeScript',
+  'JavaScript',
+  'Java',
+  'React',
+  'Next.js',
+  'Node.js',
+  'LLMs & AI Agents',
+  'System Design',
+  'AWS',
+  'Distributed Systems',
+  'PostgreSQL',
+  'Vector Databases',
+]
+
+const experience = [
+  {
+    title: 'CEO & Founder',
+    company: 'Octopod AI',
+    dates: '2025 – Present',
+    description:
+      'Building applied-AI products at the intersection of agents, memory, and developer tooling.',
+  },
+  {
+    title: 'Member of Technical Staff',
+    company: 'eBay',
+    dates: 'Oct 2023 – Present',
+    description:
+      'Working on full-stack systems for one of the largest commerce platforms in the world.',
+  },
+  {
+    title: 'Senior Software Engineer',
+    company: 'Amazon Music',
+    dates: 'Nov 2021 – Jul 2023',
+    description:
+      'Shipped backend services powering personalization and recommendations for Amazon Music.',
+  },
+  {
+    title: 'Senior Software Engineer',
+    company: 'Roku',
+    dates: 'May 2021 – Oct 2021',
+    description: 'Worked on streaming infrastructure for the Roku platform.',
+  },
+  {
+    title: 'Software Engineer',
+    company: 'Yahoo',
+    dates: 'Jan 2019 – Mar 2021',
+    description: 'Built and maintained services across Yahoo properties.',
+  },
+]
+
+const projects = [
+  {
+    name: 'Fulloop AI',
+    description: 'LLM-powered technical interview platform.',
+  },
+  {
+    name: 'ContextZero AI',
+    description: 'Hierarchical long-term memory system for AI agents.',
+  },
+  {
+    name: 'Octoflash AI',
+    description: 'AI-powered animation generator.',
+  },
+  {
+    name: 'IncidentZero AI',
+    description: 'Autonomous incident investigation agent built on MCP.',
+  },
+]
 
 export default function ProfilePage() {
   const author = allAuthors.find((p) => p.slug === 'default') as Authors
@@ -36,32 +108,43 @@ export default function ProfilePage() {
           </h3>
           <div className="text-gray-500 dark:text-gray-400">{mainContent.occupation}</div>
           <div className="text-gray-500 dark:text-gray-400">{mainContent.company}</div>
+          <div className="pt-1 text-sm text-gray-500 dark:text-gray-400">
+            San Francisco Bay Area
+          </div>
           <div className="flex space-x-3 pt-6">
-            <SocialIcon kind="mail" href={`mailto:${siteMetadata.email}`} />
+            <a
+              href="https://suniltiwari.io/contact"
+              className="text-sm text-gray-500 transition hover:text-gray-600"
+            >
+              <span className="sr-only">mail</span>
+              <Mail className="h-8 w-8 fill-current text-gray-700 hover:text-primary-500 dark:text-gray-200 dark:hover:text-primary-400" />
+            </a>
             <SocialIcon kind="github" href={siteMetadata.github} />
             <SocialIcon kind="linkedin" href={siteMetadata.linkedin} />
             <SocialIcon kind="x" href={siteMetadata.x} />
           </div>
+          <Link
+            href="https://www.suniltiwari.io/"
+            className="mt-4 text-sm text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+          >
+            suniltiwari.io →
+          </Link>
         </div>
         <div className="prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2">
           <div className="mb-8">
-            <h2 className="text-2xl font-bold leading-8 tracking-tight">About Me</h2>
+            <h2 className="text-2xl font-bold leading-8 tracking-tight text-gray-900 dark:text-gray-100">
+              About Me
+            </h2>
             <MDXLayoutRenderer code={author.body.code} />
           </div>
 
           <div className="mt-8 space-y-8">
             <div>
-              <h2 className="mb-4 text-2xl font-bold leading-8 tracking-tight">Skills</h2>
+              <h2 className="mb-4 text-2xl font-bold leading-8 tracking-tight text-gray-900 dark:text-gray-100">
+                Skills
+              </h2>
               <div className="flex flex-wrap gap-2">
-                {[
-                  'JavaScript',
-                  'TypeScript',
-                  'React',
-                  'Next.js',
-                  'Node.js',
-                  'Python',
-                  'Tailwind CSS',
-                ].map((skill) => (
+                {skills.map((skill) => (
                   <span
                     key={skill}
                     className="rounded-full bg-primary-100 px-3 py-1 text-sm font-medium text-primary-800 dark:bg-primary-900 dark:text-primary-200"
@@ -73,57 +156,82 @@ export default function ProfilePage() {
             </div>
 
             <div>
-              <h2 className="mb-4 text-2xl font-bold leading-8 tracking-tight">Experience</h2>
+              <h2 className="mb-4 text-2xl font-bold leading-8 tracking-tight text-gray-900 dark:text-gray-100">
+                Experience
+              </h2>
+              <div className="space-y-4">
+                {experience.map((role) => (
+                  <div
+                    key={`${role.company}-${role.title}`}
+                    className="border-l-4 border-primary-500 pl-4"
+                  >
+                    <h3 className="font-semibold text-gray-900 dark:text-gray-100">{role.title}</h3>
+                    <p className="text-gray-500 dark:text-gray-400">
+                      {role.company} • {role.dates}
+                    </p>
+                    <p className="mt-2">{role.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h2 className="mb-4 text-2xl font-bold leading-8 tracking-tight text-gray-900 dark:text-gray-100">
+                Education
+              </h2>
               <div className="space-y-4">
                 <div className="border-l-4 border-primary-500 pl-4">
-                  <h3 className="font-semibold">Senior Developer</h3>
-                  <p className="text-gray-500 dark:text-gray-400">Company Name • 2020 - Present</p>
-                  <p className="mt-2">
-                    Working on cutting-edge web applications and leading development teams.
+                  <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+                    M.S. Computer Software Engineering
+                  </h3>
+                  <p className="text-gray-500 dark:text-gray-400">
+                    San José State University • GPA 3.76
                   </p>
                 </div>
                 <div className="border-l-4 border-primary-500 pl-4">
-                  <h3 className="font-semibold">Full Stack Developer</h3>
-                  <p className="text-gray-500 dark:text-gray-400">Previous Company • 2018 - 2020</p>
-                  <p className="mt-2">
-                    Developed and maintained multiple client projects using modern web technologies.
-                  </p>
+                  <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+                    B.E. Information Technology
+                  </h3>
+                  <p className="text-gray-500 dark:text-gray-400">VESIT, Mumbai</p>
                 </div>
               </div>
             </div>
 
             <div>
-              <h2 className="mb-4 text-2xl font-bold leading-8 tracking-tight">Recent Projects</h2>
+              <h2 className="mb-4 text-2xl font-bold leading-8 tracking-tight text-gray-900 dark:text-gray-100">
+                Recent Projects
+              </h2>
               <div className="grid gap-4 md:grid-cols-2">
-                <div className="rounded-lg border border-gray-200 p-4 dark:border-gray-700">
-                  <h3 className="mb-2 font-semibold">Project One</h3>
-                  <p className="mb-2 text-sm text-gray-600 dark:text-gray-400">
-                    A full-stack web application built with Next.js and Node.js
-                  </p>
-                  <span className="text-sm text-gray-400 dark:text-gray-500">View Project →</span>
-                </div>
-                <div className="rounded-lg border border-gray-200 p-4 dark:border-gray-700">
-                  <h3 className="mb-2 font-semibold">Project Two</h3>
-                  <p className="mb-2 text-sm text-gray-600 dark:text-gray-400">
-                    Mobile-first responsive design with advanced animations
-                  </p>
-                  <span className="text-sm text-gray-400 dark:text-gray-500">View Project →</span>
-                </div>
+                {projects.map((project) => (
+                  <div
+                    key={project.name}
+                    className="rounded-lg border border-gray-200 p-4 dark:border-gray-700"
+                  >
+                    <h3 className="mb-2 font-semibold text-gray-900 dark:text-gray-100">
+                      {project.name}
+                    </h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      {project.description}
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
 
             <div>
-              <h2 className="mb-4 text-2xl font-bold leading-8 tracking-tight">Get in Touch</h2>
+              <h2 className="mb-4 text-2xl font-bold leading-8 tracking-tight text-gray-900 dark:text-gray-100">
+                Get in Touch
+              </h2>
               <p className="mb-4">
                 I'm always interested in hearing about new opportunities and exciting projects. Feel
                 free to reach out if you'd like to connect!
               </p>
-              <Link
-                href={`mailto:${siteMetadata.email}`}
+              <a
+                href="https://suniltiwari.io/contact"
                 className="inline-flex items-center rounded-md bg-primary-500 px-4 py-2 text-sm font-medium text-white hover:bg-primary-600 dark:bg-primary-600 dark:hover:bg-primary-700"
               >
                 Send me an email
-              </Link>
+              </a>
             </div>
           </div>
         </div>
