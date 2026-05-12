@@ -132,7 +132,7 @@ module.exports = {
             },
           },
         },
-        dark: {
+        invert: {
           css: {
             a: {
               color: theme('colors.primary.400'),
@@ -155,6 +155,11 @@ module.exports = {
               fontWeight: '600',
               color: theme('colors.gray.100'),
             },
+            h4: {
+              color: theme('colors.gray.100'),
+            },
+            p: { color: theme('colors.gray.300') },
+            li: { color: theme('colors.gray.300') },
             code: {
               backgroundColor: theme('colors.gray.800'),
               color: theme('colors.pink.400'),
@@ -190,8 +195,5 @@ module.exports = {
       }),
     },
   },
-  plugins: [
-    require('@tailwindcss/forms'),
-    require('@tailwindcss/typography'),
-  ],
+  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
 }
